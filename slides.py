@@ -329,7 +329,6 @@ class Neff(Slide):
 
         self.add_to_canvas(neff_title=neff_new)
 
-        self.next_slide()
         text_0 = Tex(
             r"• Specifically, bounds on the effective number of neutrino species $N_{\textrm{eff}}$"
         )
@@ -352,6 +351,8 @@ class Neff(Slide):
         )
 
 
+        self.play(FadeIn(text_0))
+        self.next_slide()
         pspec = ImageMobject("./figs/neff_power_spectrum.png")
         pspec_cap = Tex(r"Fig. 1 of [1912.00995]").scale(0.8)
         pspec_group = Group(pspec, pspec_cap).arrange(DOWN, buff=0.1).to_edge(RIGHT)

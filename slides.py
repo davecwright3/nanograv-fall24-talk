@@ -124,7 +124,7 @@ class RuleOfThumb(Slide):
             Transform(rot, rot_new),
         )
 
-        self.add_to_canvas(rot_title=rot_new)
+        self.add_to_canvas(rot_title=rot)
 
         self.next_slide()
         rot_cite_goal = (
@@ -176,27 +176,23 @@ class RuleOfThumb(Slide):
         self.next_slide()
         self.wipe(self.mobjects_without_canvas)
 
-        kg = MathTex(
-            r"\ddot{h}_{ij}",
-            r"+ 3H \dot{h}_{ij}",
-            r"- \frac{1}{a^2} \nabla^2 h_{ij} = (16 \pi G) \Pi_{ij}^{TT}",
-        )
-        ani = Tex(
-            r"where $\Pi_{ij}^{TT}$ is the TT projection ",
-            r"of the anisotropic stress tensor ",
-        )
-        self.play(FadeIn(VGroup(kg, ani).arrange(DOWN).to_edge(UP)))
-
-        assumptions = (
-            Tex(r"Assumptions").align_to(ani, DOWN).shift(0.25 * DOWN).to_edge(LEFT)
+        assumptions = Text(r"Assumptions").next_to(
+            rot, DOWN, buff=0.5, aligned_edge=LEFT
         )
         uline = Underline(assumptions, color=BLACK, buff=0.1)
+        gaussian_text = Text(
+            "• Stress-energy tensor components are approximately\n equal and follow a Gaussian distribution"
+        ).scale(0.8)
         gaussian = MathTex(
-            r"\tilde{T}_{ij}(\vec{k}) \approx \tilde{T}(\vec{k}) = A \exp{\frac{-\qty(\abs{\vec{k}} - k^{*})^{2}}{2 \sigma^{2}}}",
+            r"\tilde{T}_{ij}(\vec{k}) \approx \tilde{T}(\vec{k}) = A \exp{\flatfrac{-\qty(\abs{\vec{k}} - k^{*})^{2}}{2 \sigma^{2}}}",
             tex_template=template,
-        )
+        ).scale(0.8)
 
-        assumptions_group = VGroup(gaussian).align_to(uline, UL)
+        assumptions_group = (
+            VGroup(gaussian_text, gaussian)
+            .arrange(DOWN, aligned_edge=LEFT)
+            .next_to(uline, DOWN, aligned_edge=LEFT, buff=0.25)
+        )
 
         self.next_slide()
         self.play(FadeIn(assumptions, uline))
@@ -204,20 +200,30 @@ class RuleOfThumb(Slide):
         self.next_slide()
 
         iso = MathTex(
-            r"\tilde{p}_{s}\qty(\vec{k}) &= \frac{1}{3}\tilde{T}^{i}_{\ i}\qty(\tilde{k}) \approx \tilde{T}\qty(\vec{k})\\",
-            r"\tilde{\rho_{s}}\qty(\vec{k}) &= \alpha \tilde{\rho}\qty(\vec{k}) = \frac{\tilde{T}\qty(\vec{k})}{",
-            r"\omega",
-            r"}",
+            r"\tilde{p}_{s}\qty(\vec{k}) &= \flatfrac{\tilde{T}^{i}_{\ i}\qty(\tilde{k})}{3} \approx \tilde{T}\qty(\vec{k})\\",
+            r"\tilde{\rho_{s}}\qty(\vec{k}) &=  \alpha \tilde{\rho}\qty(\vec{k}) = \flatfrac{\tilde{p}_{s}\qty(\vec{k})}{\omega} = \flatfrac{\tilde{T}\qty(\vec{k})}{\omega}",
             tex_template=template,
+        ).scale(0.8)
+
+        iso_text = Text("• They are related to the closure density").scale(0.8)
+        assumptions_group += VGroup(iso_text, iso).arrange(DOWN, aligned_edge=LEFT)
+
+        assumptions_group.arrange(DOWN, aligned_edge=LEFT).next_to(
+            uline, DOWN, aligned_edge=LEFT, buff=0.25
         )
-        assumptions_group += VGroup(iso)
+
+
         beta = MathTex(
             r"\beta",
-            r"\equiv \frac{\abs{\Pi^{TT}}^2}{\abs{T}^2}",
+            r"\equiv \flatfrac{\abs{\Pi^{TT}}^2}{\abs{T}^2}",
             tex_template=template,
+        ).scale(0.8)
+        beta_text = Text('• The anisotropic "fraction" is').scale(0.8)
+
+        assumptions_group += VGroup(beta_text, beta).arrange(DOWN, aligned_edge=LEFT)
+        assumptions_group.arrange(DOWN, aligned_edge=LEFT).next_to(
+            uline, DOWN, aligned_edge=LEFT, buff=0.25
         )
-        assumptions_group += VGroup(beta)
-        assumptions_group.arrange(DOWN, aligned_edge=LEFT).align_to(uline, UL)
 
         self.next_slide()
         self.play(FadeIn(assumptions_group))
@@ -225,22 +231,23 @@ class RuleOfThumb(Slide):
         self.next_slide()
 
         rot_steps = (
-            Tex(r"How to derive the rule of thumb")
-            .next_to(assumptions, DOWN)
+            Text(r"How to derive the rule of thumb")
+            .next_to(rot, DOWN, buff=0.5)
             .to_edge(RIGHT)
+            .shift(0.8 * LEFT)
         )
         rot_steps_underline = Underline(rot_steps, color=BLACK, buff=0.1)
 
         estimate = (
-            Tex(r"Estimate the maximum perturbation")
-            .next_to(rot_steps_underline, DOWN)
-            .to_edge(RIGHT)
+            Text(r"• Estimate the maximum perturbation")
+            .scale(0.8)
+            .next_to(rot_steps_underline, DOWN, aligned_edge=LEFT, buff=0.325)
         )
 
         max_h = MathTex(
             r"&\dot{\tilde{h}} \approx \dot{\tilde{h}}_{ij} \approx \frac{16 \pi G}{k}\Pi^{TT}",
             tex_template=template,
-        ).next_to(estimate, DOWN, aligned_edge=RIGHT)
+        ).next_to(estimate, DOWN, aligned_edge=LEFT)
 
         self.next_slide()
 
@@ -251,13 +258,15 @@ class RuleOfThumb(Slide):
 
         self.next_slide()
 
-        psd_text = Tex(r"Write down the PSD in terms of the perturbations").next_to(
-            max_h, DOWN, aligned_edge=RIGHT
+        psd_text = (
+            Text(r"• Write down the PSD using the perturbations")
+            .scale(0.8)
+            .next_to(max_h, DOWN, aligned_edge=LEFT)
         )
         psd = MathTex(
             r"\Omega_{\textrm{GW}} \qty(k) = \frac{1}{\rho} \frac{k^3}{32 \pi G} \frac{1}{V} \sum_{i,j} \int \dd{\Omega} \abs{\dot{\tilde{h}}^{TT}_{ij}}^2",
             tex_template=template,
-        ).next_to(psd_text, DOWN, aligned_edge=RIGHT)
+        ).next_to(psd_text, DOWN, aligned_edge=LEFT)
 
         self.play(
             FadeIn(psd_text),
@@ -266,14 +275,16 @@ class RuleOfThumb(Slide):
 
         self.next_slide()
 
-        rot_final_text = Tex(r"Evaluate the PSD (today) at $k^*$").next_to(
-            psd, DOWN, aligned_edge=RIGHT
+        rot_final_text = (
+            Text("• Evaluate the PSD (today) at the characteristic\n scale")
+            .scale(0.8)
+            .next_to(psd, DOWN, aligned_edge=LEFT)
         )
         rot_final = MathTex(
             r"\Omega_\textrm{GW,0}\qty(k_{*}) \approx 4.7 \times 10^{-8} ",
             r"\alpha^2\beta\omega^2",
             tex_template=template,
-        ).next_to(rot_final_text, DOWN, aligned_edge=RIGHT)
+        ).next_to(rot_final_text, DOWN, aligned_edge=LEFT)
 
         self.play(
             FadeIn(rot_final_text),
@@ -350,7 +361,6 @@ class Neff(Slide):
             .to_edge(LEFT)
         )
 
-
         self.play(FadeIn(text_0))
         self.next_slide()
         pspec = ImageMobject("./figs/neff_power_spectrum.png")
@@ -360,9 +370,7 @@ class Neff(Slide):
         self.play(FadeIn(text_1, text_2, text_3, pspec_group))
         self.next_slide()
 
-        self.play(
-            FadeIn(text_4), FadeIn(SurroundingRectangle(text_4, BLACK))
-        )
+        self.play(FadeIn(text_4), FadeIn(SurroundingRectangle(text_4, BLACK)))
         self.next_slide()
 
 
@@ -449,10 +457,17 @@ result = jax.vmap(func)(samples)
             insert_line_no=False,
             style="dracula",
         ).next_to(text_group, DOWN, aligned_edge=LEFT)
-        jax_logo = SVGMobject("./figs/jax-logo.svg").next_to(
-            rendered_code, RIGHT, aligned_edge=UP
+        jax_logo = SVGMobject("./figs/jax-logo.svg").next_to(rendered_code, RIGHT)
+
+        plus = MathTex("+").scale(3).next_to(jax_logo, RIGHT, buff=0.1)
+        ptarcade_logo = (
+            ImageMobject("./figs/ptarcade-logo.jpg")
+            .scale(0.20)
+            .next_to(plus, RIGHT, buff=0.1)
         )
-        self.play(FadeIn(rendered_code), FadeIn(jax_logo))
+
+        ptarcade_group = Group(plus, ptarcade_logo)
+        self.play(FadeIn(rendered_code), FadeIn(jax_logo), FadeIn(ptarcade_group))
 
 
 # %%

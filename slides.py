@@ -205,7 +205,7 @@ class RuleOfThumb(Slide):
 
         iso = MathTex(
             r"\tilde{p}_{s}\qty(\vec{k}) &= \frac{1}{3}\tilde{T}^{i}_{\ i}\qty(\tilde{k}) \approx \tilde{T}\qty(\vec{k})\\",
-            r"\tilde{\rho_{s}}\qty(\vec{k}) &= \frac{\tilde{T}\qty(\vec{k})}{",
+            r"\tilde{\rho_{s}}\qty(\vec{k}) &= \alpha \tilde{\rho}\qty(\vec{k}) = \frac{\tilde{T}\qty(\vec{k})}{",
             r"\omega",
             r"}",
             tex_template=template,
@@ -616,8 +616,9 @@ class Final(Slide):
 
         self.next_slide()
         future_plan = Text("• I plan to incorporate the methods and utilities from this work into PTArcade").scale(0.8).next_to(caveat, DOWN, aligned_edge=LEFT)
+        future_plan_2 = Text("• We will have quick and efficient methods to assess the feasibility of new physics models").scale(0.8).next_to(future_plan, DOWN, aligned_edge=LEFT)
         qr = ImageMobject("./figs/github_qr.png").to_corner(DR)
-        self.play(FadeIn(future_plan), FadeIn(qr))
+        self.play(FadeIn(future_plan), FadeIn(future_plan_2), FadeIn(qr))
 
 
 # %%

@@ -234,7 +234,7 @@ class RuleOfThumb(Slide):
             Text(r"How to derive the rule of thumb")
             .next_to(rot, DOWN, buff=0.5)
             .to_edge(RIGHT)
-            .shift(0.8 * LEFT)
+            .shift(0.5 * LEFT)
         )
         rot_steps_underline = Underline(rot_steps, color=BLACK, buff=0.1)
 

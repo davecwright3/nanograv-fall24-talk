@@ -276,7 +276,7 @@ class RuleOfThumb(Slide):
         self.next_slide()
 
         rot_final_text = (
-            Text("• Evaluate the PSD (today) at the characteristic\n scale")
+            Text("• Evaluate the PSD today at the characteristic\n scale")
             .scale(0.8)
             .next_to(psd, DOWN, aligned_edge=LEFT)
         )
